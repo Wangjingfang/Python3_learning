@@ -1,0 +1,259 @@
+### 20 input输入
+##a_input = input('please give a number:')  # 相当于 cin  return a string '1'
+##print('This input number is:',a_input)
+##
+##if a_input == '1':
+##    print('This is a good one')
+##elif a_input == '2':
+##    print('See you next time')
+##else:
+##    print('Good luck')
+##
+##"""
+##please give a number:2
+##This input number is: 2
+##Good luck
+##"""
+### 类型转换
+##a_input = int(input('Please give a number:'))
+
+
+# 21 元祖（tuple） 列表(list)
+
+##a_tuple = (1,2,3,4,15,6)
+##another_tuple = 2,4,6,7,8
+##
+##a_list = [12,3,67,7,82]
+##
+##for content in a_list:
+##    print(content)
+##
+##for index in range(len(a_list)):  # the same as tuple
+##    print('index=', index, 'number in list=', a_list[index])
+##print('a_list[1]:' ,a_list[1])
+##"""
+##index= 0 number in list= 12
+##index= 1 number in list= 3
+##index= 2 number in list= 67
+##index= 3 number in list= 7
+##index= 4 number in list= 82
+##a_list[1]: 3
+##"""
+
+# 22 列表
+#
+
+# 23 多维列表  1d to 2d or to 3d
+##a = [1,2,3,4,5]   # 1d
+##multi_dim_a = [[1,2,3],
+##               [2,3,4],
+##               [3,4,5]]
+##print(a[0])
+##print(multi_dim_a[0][1])
+
+# 24  dictionary  字典是没有顺序的容器
+##a_list = [1,2,3,4,5,4,2]
+##d = {}   # 字典用大括号  key -> 内容，成对存在 
+##d2 = {1:'a', 'c':'b'}
+##
+###del d['pear']  # 删除字典里的元素
+###d['b'] =20
+##
+##d = {'apple':[1,2,3],'pear':{1:3,3:'a'}, 'oragne':2}
+##
+##print(d['pear'][3])  #  a
+##
+##
+### 25 import 载入模块
+### 3third 只想 import  time 种的 time 和 localtime 两个特定功能
+##from time import time, localtime
+##print(localtime())
+##print(time())
+##
+### 4th 载入 time 所有功能  from time import *
+##from time import*
+
+# 26 自己的模块
+##import m1  # 在同一目录下即可
+##print(m1.printdata('I m python1'))
+
+# 或者把m1 copy to site-packages 里，同样可以调用
+
+# 27 continue & break
+
+##a = True
+##while a:
+##    b = input('type something')
+##    if b == '1':
+##        a = False
+##    else:
+##        pass   ## 一直循环
+##
+##print('finish run')
+### break continue
+##while True:
+##    b = input('type something')
+##    if b == '1':
+##        break
+##    else:
+##        pass   ## 一直循环
+##    print('still in while')
+##print('finish run')
+### break 跳出整个循环  continue 跳出当前语句
+
+# 28 错误处理 try
+# 当打开一个文件，但没有命名时，会报出错误
+##try:
+##    file = open('nnnn', 'r+')
+##except Exception as e:
+##    print('there is no file named as eeee')  # 利用Exception把错误的信息捕获存储到e中
+##    response = input('do you want to create a new file')
+##    if response =='y':
+##        file = open('nnnn', 'w')
+##    else:
+##        pass
+##else:  # 成功了使用else下的语句
+##    file.write('ssss')
+##file.close()
+
+# 29 zip lambda,
+##a = [1,2,3]
+##b = [4,5,6]
+##zip(a,b)   #  a 和 b 竖向的合并
+##list(zip(a,b))  # 可视化
+#### [(1, 4), (2, 5), (3, 6)]
+##for i,j in zip(a,b):
+##    print(i/2, j*2)
+##    
+##def fun1(x,y):
+##    return(x+y)
+##fun1(2,3) # 5
+##fun2 = lambda x, y:x+y  ## 用lambda 定义简单的代码
+##fun2(2,3) # 5
+##
+##map(fun1,[1], [2])
+##
+##list(map(fun1,[1], [2]))
+##
+##list(map(fun1, [1,3], [2,5]))
+"""
+>>> map(fun1,[1], [2])
+<map object at 0x000001B13F3AEC88>
+>>> list(map(fun1,[1], [2]))
+[3]
+>>> list(map(fun1, [1,3], [2,5]))
+[3, 8]
+"""
+
+# 30 渐&深复制
+##import copy
+##a = [1,2,[3,4]]
+##d = copy.copy(a)
+##id(a)==id(d)
+##False
+##id(a[2])==id(d[2])
+##True
+##a[2][0]=333
+##d
+##[1, 2, [333, 4]]
+# deep copy 和 copy 是，Deep copy会给新变量创建一块新的内存空间，shallow copy会共用同一块内存空间
+
+# 31 Python threading  多线， 同一时间分批量计算
+
+# 32 add treading
+
+##import threading
+##
+### step 2 定义一个线程的工作
+##def thread_job():
+##    print("this is an added thread, number is %s" % threading.current_thread())
+##def main():
+##    added_thread = threading.Thread(target=thread_job)  # step 1 添加一个线程，功能就是step定义的
+##    added_thread.start()   # step 3 让线程开始工作
+##    # print(threading.active_count())  # 查看现在有多少激活的线程
+##    # print(threading.enumerate())     # 查看当前运行的哪两个线程
+##    # print(threading.current_thread())  # 当前运行程序时的线程
+##if __name__=='__main__':
+##    main()
+# 33 jion功能
+##import threading
+##import time
+##def thread_job():
+##    print('T1 start\n')
+##    for i in range(10):
+##        time.sleep(0.1)
+##    print('T1 finish\n')
+##
+##def T2_job():
+##    print('T2 start\n')
+##    print('T2 finish\n')
+##def main():
+##    added_thread = threading.Thread(target=thread_job, name='T1')  # step 1 添加一个线程，功能就是step定义的
+##    added_thread2 = threading.Thread(target=T2_job, name='T2')
+##    added_thread.start()   # step 3 让线程开始工作
+##    add_thread.join()   # 等待 T1这个线程运行完 ， 将T1,T2都加入到主线程中，才会 继续
+##    print('all done\n')
+##if __name__=='__main__':
+##    main()
+
+
+# 34 queue 功能   # 多线程没有返回值，把运算的结果放入队列中，对每个线程的队列到主线程再拿出了
+import threading
+import time
+from queue import Queue    # queue是模块 ， Queue是 功能
+def job(l):
+    for i in range(len(l)):
+        l[i] = l[i]**2
+    q.put(l)  # 不能用 return
+
+def multithreading(data):
+    q = Queue
+    threads = []
+    data = [[1,2,3],[3,4,5],[4,4,4],[5,5,5]]
+    for i in range(4):
+        t = threading.Thread(target=job, args=(data[i],q))  # 传送给每个线程的数值
+        t.start()
+        threads.append(t)   # 把线程加到全部的线程当中
+    for thread in threads:
+        thread.join()
+    results = []
+    for _ in range(4):
+        results.append(q.get())# 每次拿出一个，只能按照顺序拿出  n、拿4次
+    print(results)    
+
+if __name__=='__main__':
+    multithreading(data)
+
+# 35 threading 不一定有效率
+# GIP 的释放和下放 
+
+
+#36 lock 锁  # 把第一个线程处理完然后给第二个线程，可能会需要lock，对共享内存加工处理会用到lock
+import threading
+# 定义两个线程
+def job1():
+    global A
+    lock.acquire()
+    for i in range(10):
+        A +=1
+        print('job1',A)
+    lock.release()
+def job2():
+    global A
+    lock.acquire()
+    for i in range(10):
+        A +=10
+        print('job2', A)
+    lock.release()
+# 要锁住的程序开始前acquire，代码结束时 release 一下
+    
+if __name__ =='__main__':
+    A = 0
+    lock = threading.Lock()
+    t1 = threading.Thread(target=job1)
+    t2 = threading.Thread(target=job2)
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
+
