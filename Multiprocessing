@@ -1,0 +1,226 @@
+# 1 Multiprocessing  多进程  多核CPU
+
+# 2 create Multiprocessing
+##import multiprocessing as mp
+##import threading as td
+##
+##def job():  # step 2 define a job
+##    print('aaaaa')
+### t1 = td.Tread(target=job, args=(a,b))   # 无括号是引用，带括号是调用函数
+##
+##if __name__=='__main__':   # 必须在mian格式下运行
+##
+##    p1 = mp.Process(target=job, args=(1,2))  # step 1
+##    # t1.start() 
+##    p1.start()  # step 3 start job
+##    p1.join()
+### 在window 中无反应，用pycharm,或cmd运行
+
+# 3 queue 进程输出
+##import multiprocessing as mp
+##
+##def job(q):
+##    res = 0
+##    for i in range(10000):
+##        res += i + i**2 + i**3
+##    
+##    q.put(res)# queue  把多核运算的结果放入队列中，全部运算完成后，再从队列中取出
+##
+##if __name__=='__main__':
+##
+##    q = mp.Queue()
+##    p1 = mp.Process(target=job, args=(q,))   # q, 表示args可以迭代东西，加“，”表示后面可以输入其他东西
+##    p2 = mp.Process(target=job, args=(q,))
+##    p1.start()
+##    p2.start()
+##    p1.join()
+##    p2.join()
+##    res1 = q.get()  # 再从queue中取出运算的数值
+##    res2 = q.get()
+##    print(res1+res2)
+"""
+D:\python3\python.exe D:/python3/Python_learn/Python3_Multiprocessing.py
+4999666716660000
+
+Process finished with exit code 0
+Pycharm 的运行结果，IDLE运行无结果
+"""
+
+# 4 效率对比
+##import multiprocessing as mp
+##import threading as td
+##import time
+##def job(q):
+##    res = 0
+##    for i in range(1000000):
+##        res +=i + i**2 + i**3
+##    q.put(res)  # queue
+##
+##def mulcore():
+##    q = mp.Queue()
+##    p1 = mp.Process(target=job, args=(q,))
+##    p2 = mp.Process(target=job, args=(q,))
+##    p1.start()
+##    p2.start()
+##    p1.join()
+##    p2.join()
+##    res1 = q.get()
+##    res2 = q.get()
+##    print('mulcore:', res1+res2)
+##
+##def normal():
+##    res = 0
+##    for _ in range(2):
+##        for i in range(1000000):
+##            res +=i + i**2 + i**3
+##    print('normal', res)
+##
+##def multhread():
+##    q = mp.Queue()
+##    t1 = td.Thread(target=job, args=(q,))
+##    t2 = td.Thread(target=job, args=(q,))
+##    t1.start()
+##    t2.start()
+##    t1.join()
+##    t2.join()
+##    res1 = q.get()
+##    res2 = q.get()
+##    print('multhread:', res1+res2)
+##    
+##if __name__=='__main__':
+##    st = time.time()
+##    normal()
+##    st1 = time.time()
+##    print('normal tiem:',st1 - st)
+##    multhread()
+##    st2 = time.time()
+##    print('multithread time', st2 - st1)
+##    mulcore()
+##    print('multicore time',time.time()-st2)
+"""
+normal 499999666667166666000000
+normal tiem: 4.743088483810425
+multhread: 499999666667166666000000
+multithread time 4.553827524185181
+mulcore: 499999666667166666000000
+multicore time 2.8804314136505127
+"""
+
+# 5 进程池    把所有要运行的东西放入池中，Python 会自动分配解决分配这个任务
+##import multiprocessing as mp
+##
+##def job(x):
+##    return x*x    # 往pool中丢值会返回出来
+##
+##def multicore():
+##    pool = mp.Pool()                   # step 1 define a pool，默认值是所有的核，(processes =2)设置运行的核数 
+##    res = pool.map(job,range(10))      # step 2 把方程，数值放入池中,会自动分配到核中
+##    print(res)
+##    res = pool.apply_async(job, (2,))   # 传入一个值放入1个核中运算一下 
+##    print(res.get())
+##    multi_res = [pool.apply_async(job, (i,)) for i in range(10)] # 等于1迭代一次，2一次，不断的迭代,放入list中；迭代是在一个核中进行的
+##    #  i 后面一定要加“,” 不然会报错，只要有不断迭代的值，后面就要加
+##    print([res.get() for res in multi_res])
+##
+##
+##if __name__=='__main__':
+##    multicore()
+"""
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+4
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+"""
+
+# 6 共享内存  为了解决：多进程之间的变量交流问题；  物理上的共享内存是在CPU核之间的位置
+##import multiprocessing as mp
+### 定义共享内存
+##value = mp.Value('d',1)
+##array = mp.Array('i',[1,2,4])  # 只是1维的  线型的 和numpy 不同
+
+# 7 lock 进程锁  为了避免核抢夺共享内存，加入lock来解决
+import multiprocessing as mp
+import time
+# 未lock 时
+def job(v,num):
+    for _ in range(10):
+        time.sleep(0.1)   
+        v.value +=num
+        print(v.value)
+def multicore():
+    v = mp.Value('i',0)  # define 共享内存
+    p1 = mp.Process(target = job, args=(v,1,))  # 给1 如何挣这个共享内存
+    p2 = mp.Process(target = job, args=(v,3,))
+    p1.start()
+    p2.start()
+    p1.join()
+    p2.join()
+
+if __name__=='__main__':
+    multicore()
+# lock 时 填加参数l 
+def job(v,num,l):
+    l.acquire()
+    for _ in range(10):
+        time.sleep(0.1)   
+        v.value +=num
+        print(v.value)
+    l.release()
+def multicore():
+    l = mp.Lock()
+    v = mp.Value('i',0)  # define 共享内存
+    p1 = mp.Process(target = job, args=(v,1,l))  # 给1 如何挣这个共享内存
+    p2 = mp.Process(target = job, args=(v,3,l))
+    p1.start()
+    p2.start()
+    p1.join()
+    p2.join()
+
+if __name__=='__main__':
+    multicore()
+"""
+    在Pycharm 运行，IDLE没有输出
+$没有lock的运行结果
+1
+4
+5
+8
+9
+12
+13
+16
+17
+20
+21
+24
+25
+28
+29
+32
+33
+36
+37
+40
+$ 加入lock运行的结果
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+13
+16
+19
+22
+25
+28
+31
+34
+37
+40
+加入lock后，前一个核运算完，后一个再开始
+"""
+
