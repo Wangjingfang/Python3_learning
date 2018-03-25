@@ -1,0 +1,149 @@
+# 31 Python threading  多线， 同一时间分批量计算
+
+# 32 add treading
+
+##import threading
+##
+### step 2 定义一个线程的工作
+##def thread_job():
+##    print("this is an added thread, number is %s" % threading.current_thread())
+##def main():
+##    added_thread = threading.Thread(target=thread_job)  # step 1 添加一个线程，功能就是step定义的
+##    added_thread.start()   # step 3 让线程开始工作
+##    # print(threading.active_count())  # 查看现在有多少激活的线程
+##    # print(threading.enumerate())     # 查看当前运行的哪两个线程
+##    # print(threading.current_thread())  # 当前运行程序时的线程
+##if __name__=='__main__':
+##    main()
+# 33 jion功能
+##import threading
+##import time
+##def thread_job():
+##    print('T1 start\n')
+##    for i in range(10):
+##        time.sleep(0.1)
+##    print('T1 finish\n')
+##
+##def T2_job():
+##    print('T2 start\n')
+##    print('T2 finish\n')
+##def main():
+##    added_thread = threading.Thread(target=thread_job, name='T1')  # step 1 添加一个线程，功能就是step定义的
+##    added_thread2 = threading.Thread(target=T2_job, name='T2')
+##    added_thread.start()   # step 3 让线程开始工作
+##    add_thread.join()   # 等待 T1这个线程运行完 ， 将T1,T2都加入到主线程中，才会 继续
+##    print('all done\n')
+##if __name__=='__main__':
+##    main()
+
+
+# 34 queue 功能   # 多线程没有返回值，把运算的结果放入队列中，对每个线程的队列到主线程再拿出了
+##import threading
+##import time
+##from queue import Queue    # queue是模块 ， Queue是 功能
+##def job(l,q):
+##    for i in range(len(l)):
+##        l[i] = l[i]**2
+##    q.put(l)  # 不能用 return
+##
+##def multithreading():
+##    q = Queue()
+##    threads = []
+##    data = [[1,2,3],[3,4,5],[4,4,4],[5,5,5]]
+##    for i in range(4):
+##        t = threading.Thread(target=job, args=(data[i],q))  # 传送给每个线程的数值
+##        t.start()
+##        threads.append(t)   # 把线程加到全部的线程当中
+##    for thread in threads:
+##        thread.join()
+##    results = []
+##    for _ in range(4):
+##        results.append(q.get())# 每次拿出一个，只能按照顺序拿出  n、拿4次
+##    print(results)    
+##
+##if __name__=='__main__':
+##    multithreading()
+
+# 35 threading 不一定有效率
+# GIP 的释放和下放
+import threading
+import copy
+import time
+from queue import Queue    # queue是模块 ， Queue是 功能
+
+def job(l,q):
+    res = sum(l)
+    q.put(res)
+
+def normal(l):
+    total = sum(l)
+    print(total)        
+
+def multithreading(l):
+    q = Queue()
+    threads = []
+    for i in range(4):
+        t = threading.Thread(target=job, args=(copy.copy(l), q),name='T%i' % i)
+        t.start()
+        threads.append(t)   # 把线程加到全部的线程当中
+    [t.join() for t in threads]
+    total = 0
+    for _ in range(4):
+        total += q.get()
+    print(total)
+
+
+    
+if __name__=='__main__':
+    l = list(range(1000000))
+    s_t = time.time()
+    normal(l*4)
+    print('normal:', time.time()-s_t)
+    s_t = time.time()
+    multithreading(l)
+    print('multithreading:',time.time()-s_t)
+"""
+$ 没有使用copy
+1999998000000
+normal: 0.4219210147857666
+1999998000000
+multithreading: 0.29691410064697266
+>>> 
+========= RESTART: D:\python3\Python_learn\python2_Multithreading.py =========
+$ 使用了copy 
+1999998000000
+normal: 0.3906698226928711
+1999998000000
+multithreading: 0.37505030632019043
+"""
+    
+##
+##
+###36 lock 锁  # 把第一个线程处理完然后给第二个线程，可能会需要lock，对共享内存加工处理会用到lock
+##import threading
+### 定义两个线程
+##def job1():
+##    global A
+##    lock.acquire()
+##    for i in range(10):
+##        A +=1
+##        print('job1',A)
+##    lock.release()
+##def job2():
+##    global A
+##    lock.acquire()
+##    for i in range(10):
+##        A +=10
+##        print('job2', A)
+##    lock.release()
+### 要锁住的程序开始前acquire，代码结束时 release 一下
+##    
+##if __name__ =='__main__':
+##    A = 0
+##    lock = threading.Lock()
+##    t1 = threading.Thread(target=job1)
+##    t2 = threading.Thread(target=job2)
+##    t1.start()
+##    t2.start()
+##    t1.join()
+##    t2.join()
