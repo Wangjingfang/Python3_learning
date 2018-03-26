@@ -1,0 +1,442 @@
+### 1  tkinter 基于GUI的窗口设计
+##
+### 2 creat a window  label button
+##import tkinter as tk
+##
+##window = tk.Tk()  # window object
+##window.title('my window')
+##window.geometry('200x100')
+##
+##var = tk.StringVar()
+##
+##l = tk.Label(window,textvariable=var,bg='green',font=('Arial',12),
+##             width=15, height=2)   # label object  在什么窗口上，给予什么任务，颜色，字体等
+##
+### 安置它的方法 1 还有place
+##l.pack()
+##on_hit = False
+##def hit_me():
+##    global on_hit
+##    if on_hit ==False:
+##        on_hit = True
+##        var.set('you hit me')
+##    else:
+##        on_hit = False
+##        var.set('')
+##        
+##b = tk.Button(window, text='hit me', width=15,
+##              height=2, command=hit_me)
+##b.pack()
+##
+##window.mainloop()  # 不断的更新，循环更新数据,系统必备的
+
+"""
+步骤：
+step 1 create a window and setting window.title, size and so on
+step 2 create a label using to show information(text), setting it,pack it
+step 3 create a button and setting it, command function, pack it
+step 4 define command function
+step 5 create a var using tk.StringVar()
+step 6 use the textvariable=var in the label, it used to show the var.set string
+step 7 finish the command function
+step 8 window.mainloop()
+total: window -> label-> button
+"""
+# 3 Entry(可以输入用户名，网站啥的) & Text
+# insert point 和 insert end 两种功能
+##import tkinter as tk
+##
+##window = tk.Tk()  # window object
+##window.title('my window')
+##window.geometry('200x200')
+##
+##e = tk.Entry(window,show=None)  # show('*')
+##e.pack()
+##
+##def insert_point():
+##    var = e.get()
+##    t.insert('insert', var)  # 放入指针的位置
+##
+##def insert_end():
+##    var = e.get()
+##    #t.insert('end', var)
+##    t.insert('1.3', var)  # row 1 column 3
+##b1 = tk.Button(window, text='insert point', width=15,
+##              height=2, command=insert_point)
+##b1.pack()
+##
+##b2 = tk.Button(window,text='insert end',width=15,
+##               height=2,command= insert_end)
+##b2.pack()
+##
+##t = tk.Text(window,height=2)
+##t.pack()
+##window.mainloop() 
+
+# 4 listbox 列表控件
+##import tkinter as tk
+##
+##window = tk.Tk()  # window object
+##window.title('my window')
+##window.geometry('200x200')
+##
+##e = tk.Entry(window,show=None)  # show('*')
+##e.pack()
+##
+##var1 = tk.StringVar()  # 用来显示列表中选中的字符
+##l = tk.Label(window, bg='yellow', width=4, textvariable=var1)
+##l.pack()
+##
+##def print_selection():
+##    value = lb.get(lb.curselection())  # 拿出光标选定的东西
+##    var1.set(value)
+##b1 = tk.Button(window, text='print selection', width=15,
+##              height=2, command=print_selection)
+##b1.pack()
+##
+##var2 = tk.StringVar()  # 用来插入列表中的文本
+##var2.set((11,22,3,44))  
+##lb = tk.Listbox(window, listvariable = var2 )  # 把自变量传入 lb中
+##list_items = [1,2,3,4]
+##for item in list_items:  # 将文本框信息插入 lb中
+##    lb.insert('end',item)
+##lb.insert(1,'first')
+##lb.insert(2, 'second')
+##lb.delete(2)
+##lb.pack()
+##
+##"""
+##两个变量，分别存取不同的字符
+##"""
+##t = tk.Text(window,height=2)
+##t.pack()
+##window.mainloop() 
+
+# 5 Radiobutton  可以点选的button
+##import tkinter as tk
+##
+##window = tk.Tk()  # window object
+##window.title('my window')
+##window.geometry('200x200')
+##
+##
+##var = tk.StringVar() 
+##l = tk.Label(window, bg='yellow', width=20, text='empty')
+##l.pack()
+##
+##def print_selection():
+##    l.config(text='you have selected ' + var.get())
+##    
+##r1 = tk.Radiobutton(window, text='Option A',variable = var,
+##                    value = 'A',
+##                    command = print_selection)  # 当选A 时 会吧A 赋值给var
+##r1.pack()
+##r2 = tk.Radiobutton(window, text='Option B',variable = var,
+##                    value = 'B',
+##                    command = print_selection)
+##r2.pack()
+##r3 = tk.Radiobutton(window, text='Option C',variable = var,
+##                    value = 'C',
+##                    command = print_selection)
+##r3.pack()
+##
+##window.mainloop()
+
+# 6 Scale 尺度  被拉动的条，返回的数字
+##import tkinter as tk
+##
+##window = tk.Tk()  # window object
+##window.title('my window')
+##window.geometry('200x200')
+##
+##
+## 
+##l = tk.Label(window, bg='yellow', width=20, text='empty')
+##l.pack()
+##
+##def print_selection(v):
+##    l.config(text='you have selected ' + v)
+##    
+##s = tk.Scale(window,label='try me', from_=5, to=11,orient=tk.HORIZONTAL,
+##             length=200,showvalue=0,tickinterval=3, resolution=0.01,
+##             command=print_selection)
+##s.pack()
+### Scale 是有返回值的，所以在定义的时候需要给 func 传入参数
+##window.mainloop()
+
+# 7 Checkbutton  勾选项
+##import tkinter as tk
+##
+##window = tk.Tk()  # window object
+##window.title('my window')
+##window.geometry('200x200')
+##
+##
+## 
+##l = tk.Label(window, bg='yellow', width=20, text='empty')
+##l.pack()
+##
+##def print_selection():
+##    if(var1.get()==1)&(var2.get()==0):
+##        l.config(text='I love Python')
+##    elif(var1.get()==0)&(var2.get()==1):
+##        l.config(text='I love C++')
+##    elif(var1.get()== 0)&(var2.get()==0):
+##        l.config(text='I do not love either')
+##    else:
+##        l.config(text='I love both')
+##var1 = tk.IntVar()
+##var2 = tk.IntVar()
+### 点选了 是onvalue=1 赋值给var1，没有则是0
+##c1 = tk.Checkbutton(window, text='Python',variable=var1, onvalue=1, offvalue=0,
+##                    command=print_selection)
+##c2 = tk.Checkbutton(window, text='C++',variable=var2, onvalue=1, offvalue=0,
+##                    command=print_selection)
+##c1.pack()
+##c2.pack()
+##
+##window.mainloop()
+
+# 8 Canvas 画布
+##import tkinter as tk
+##
+##window = tk.Tk()
+##window.title('my window')
+##window.geometry('500x500')
+##
+##
+##canvas =tk.Canvas(window,bg='blue',height=100,width=200)
+##image_file = tk.PhotoImage(file='catSmall.png')
+##image = canvas.create_image(0,0,anchor='center',image=image_file)  # 锚定anchor
+### n, ne, e, se, s, sw, w, nw, or center
+##
+##x0,y0,x1,y1=50, 50, 80, 80
+##line = canvas.create_line(x0,y0,x1,y1)
+##oval = canvas.create_oval(x0,y0,x1,y1,fill='red')
+##arc = canvas.create_arc(x0,y0,x1+30,y1+30, start=0,extent=180)
+##rect = canvas.create_rectangle(100,30,100+20, 30+20)
+##canvas.pack()
+##
+##def moveit():
+##    canvas.move(rect, 0, 2)
+##    
+##canvas.pack()
+##
+##b = tk.Button(window, text='move',command=moveit).pack()
+##
+##
+##window.mainloop()
+
+# 9 Menubar 菜单
+##import tkinter as tk
+##
+##window = tk.Tk()
+##window.title('my window')
+##window.geometry('200x200')
+##
+##l = tk.Label(window, text='',bg='yellow')
+##l.pack()
+##
+##counter = 0
+##
+##def do_job():
+##    global counter
+##    l.config(text='do'+ str(counter))
+##    counter +=1 
+##    
+##
+##menubar = tk.Menu(window)
+##filemenu = tk.Menu(menubar,tearoff=0)  # tearoff 分开和不能分开的区别
+##menubar.add_cascade(label='File',menu=filemenu)
+##filemenu.add_command(label='New',command=do_job)
+##filemenu.add_command(label='Open',command=do_job)
+##filemenu.add_command(label='Save',command=do_job)
+##filemenu.add_separator()
+##filemenu.add_command(label='Exit', command=window.quit)
+##
+##editmenu=tk.Menu(menubar, tearoff=0)
+##menubar.add_cascade(label='Edit',menu=editmenu)
+##editmenu.add_command(label='Cut',command=do_job)  # edit 有3中不同的功能
+##editmenu.add_command(label='Copy',command=do_job)
+##editmenu.add_command(label='Paste',command=do_job)
+##submenu = tk.Menu(filemenu)
+##
+##submenu = tk.Menu(filemenu)
+##filemenu.add_cascade(label='Lmpor', menu=submenu,underline=0)
+##submenu.add_command(label = 'Submenu1',command=do_job)
+##
+##
+##window.config(menu=menubar)  
+##
+##window.mainloop()
+
+
+# 10 Frame 框架  长在窗口里的窗口
+##import tkinter as tk
+##
+##window = tk.Tk()
+##window.title('my window')
+##window.geometry('200x200')
+##tk.Label(window, text='on the window').pack()
+##
+##frm = tk.Frame(window)
+##
+##frm.pack()
+##frm_l = tk.Frame(frm)
+##frm_r = tk.Frame(frm)
+##
+##frm_l.pack(side='left')
+##frm_r.pack(side='right')
+##
+##tk.Label(frm_l, text='on the frm_l1').pack()
+##tk.Label(frm_r, text='on the frm_r1').pack()
+##tk.Label(frm_r, text='on the frm_r1').pack()
+##
+##window.mainloop()
+
+# 11 messagebox  窗口
+# import module 和 from module import, 区别是前者所有导入的东西使用时都加上模块名限定，后者不需要
+##import tkinter as tk
+##from tkinter import messagebox
+##window = tk.Tk()
+##window.title('my window')
+##window.geometry('200x200')
+##
+##def hit_me():
+##    tk.messagebox.showwarning(title='Hi', message='dadadada')
+##    
+##tk.Button(window, text='hit me', command=hit_me).pack()
+##
+##
+##window.mainloop()
+
+# 12 pack grid place pack 放置的位置
+##import tkinter as tk
+##
+##window = tk.Tk()
+##window.title('my window')
+##window.geometry('200x200')
+##
+####tk.Label(window, text=3).pack(side='top')
+####tk.Label(window, text=3).pack(side='bottom')
+####tk.Label(window, text=3).pack(side='left')
+####tk.Label(window, text=3).pack(side='right')
+##
+####for i in range(4):
+####    for j in range(3):
+####        tk.Label(window,text=3).grid(row=i, column=j, padx=10,pady=10)  # ipad 内部放置
+##
+##tk.Label(window, text=3).place(x=10,y=100,anchor='sw')
+##
+##window.mainloop()
+
+# 13 登录窗口
+import tkinter as tk
+from tkinter import messagebox  # import this to fix messagebox error
+import pickle  # 存放数据
+
+window = tk.Tk()
+window.title('Welcome to Learning Python')
+window.geometry('450x300')
+
+# 加载图片
+canvas = tk.Canvas(window, height=200, width=500)
+image_file = tk.PhotoImage(file='welcome.gif')
+image = canvas.create_image(0,0,anchor='nw',image=image_file)
+canvas.pack(side='top')
+
+# user information Label
+tk.Label(window, text='User name:').place(x=50,y=150)
+tk.Label(window, text='Password:').place(x=50, y=190)
+
+# define var textvariable
+var_usr_name = tk.StringVar()
+var_usr_name.set('example@python.com')  # 默认值
+# Entry & text 文本框
+entry_usr_name = tk.Entry(window, textvariable=var_usr_name)
+entry_usr_name.place(x=160, y=150)
+
+# define var pwd
+var_usr_pwd = tk.StringVar()
+entry_usr_name = tk.Entry(window, textvariable=var_usr_pwd, show='*')
+entry_usr_name.place(x=160, y=190)
+
+# button login and sign up
+def usr_login():
+    usr_name = var_usr_name.get()
+    usr_pwd = var_usr_pwd.get()
+    try:
+        with open('usrs_info.pickle','rb') as usr_file:
+            usrs_info = pickle.load(usr_file)
+    except FileNotFoundError:
+        with open('usrs_info.pickle','wb') as usr_file:
+            usrs_info = {'admin':'admin'}
+            pickle.dump(usrs_info, usr_file)
+
+    if usr_name in usrs_info:
+        if usr_pwd == usrs_info[usr_name]:
+            tk.messagebox.showinfo(title='Welcome', message ='How are you ' + usr_name)
+            windowGame = tk.Tk()
+            windowGame.title('Pygame')
+            windowGame.geometry('500x600')
+        
+            
+        else:
+            tk.messagebox.showerror(message = 'Error,your passowrd is wrong, try again.')
+    else:
+        is_sign_up = tk.messagebox.askyesno('Welcome',
+                                            'you have not sign up yet. Sign up today')
+        if is_sign_up:
+            usr_sign_up()
+
+
+def usr_sign_up():
+    def sign_to_Wang_Python():  # 把输入的信息保存起来
+        np = new_pwd.get()
+        npf = new_pwd_confirm.get()
+        nn = new_name.get()
+        with open('usrs_info.pickle','rb') as usr_file:
+            exist_usr_info = pickle.load(usr_file)
+        if np != npf:
+            tk.messagebox.showerror('Error', 'Password and confim password must be the same!')
+        elif nn in exist_usr_info:
+            tk.messagebox.showerror('Error', 'The  user has already signed up!')
+        else:
+            exist_usr_info[nn] = np  # dictionary
+            with open('usrs_info.pickle', 'wb') as usr_file:
+                pickle.dump(exist_usr_info, usr_file)  # put the usr information into usr database
+            tk.messagebox.showinfo('welcome', 'you have successfully signed up!')
+            window_sign_up.destroy()
+            
+    window_sign_up = tk.Toplevel(window)
+    window_sign_up.geometry('350x200')
+    window_sign_up.title('Sign up window')
+
+    new_name = tk.StringVar()
+    new_name.set('example@python.com')
+    tk.Label(window_sign_up, text='User name:').place(x=10, y=10)
+    entry_new_name = tk.Entry(window_sign_up, textvariable=new_name)
+    entry_new_name.place(x=150, y=10)
+    
+    new_pwd = tk.StringVar()
+    tk.Label(window_sign_up, text='Password:').place(x=10, y=50)
+    entry_new_pwd = tk.Entry(window_sign_up, textvariable=new_pwd, show='*')
+    entry_new_pwd.place(x=150, y=50)
+
+    new_pwd_confirm = tk.StringVar()
+    tk.Label(window_sign_up, text='Confirm password:').place(x=10, y=90)
+    entry_usr_pwd_confirm = tk.Entry(window_sign_up, textvariable=new_pwd_confirm, show='*')
+    entry_usr_pwd_confirm.place(x=150, y=90)
+
+    btn_confirm_sign_up = tk.Button(window_sign_up, text='Sign up', command=sign_to_Wang_Python)
+    btn_confirm_sign_up.place(x=150, y=130)
+
+#login and sign up button
+btn_login = tk.Button(window, text='Login', command=usr_login)
+btn_login.place(x=170, y=230)
+btn_sign_up = tk.Button(window, text='Sign up',command=usr_sign_up)
+btn_sign_up.place(x=270, y=230)
+
+
+window.mainloop()
+
