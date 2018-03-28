@@ -1,0 +1,52 @@
+# pickle 存放数据
+
+##import pickle
+##
+##a_dict = {'da':111,2:[23,1,4],'23':{1:2,'d':'sad'}} # define a dictionary
+
+##file = open('pickle_example.pickle','wb')
+##
+##pickle.dump(a_dict,file)  # put the a_dict in the file
+##file.close()
+
+##file = open('pickle_example.pickle', 'rb')
+##a_dict1 = pickle.load(file)
+##file.close()
+
+##with open('pickle_example.pickle', 'rb') as file:
+##    a_dict1 = pickle.load(file)
+##
+##print(a_dict1)
+
+'''
+{'da': 111, 2: [23, 1, 4], '23': {1: 2, 'd': 'sad'}}
+'''
+
+# set 找不同
+char_list = ['a','b','c','c','d','d','d','d']
+print(set(char_list))
+print(type(set(char_list)))
+sentence = 'Welcome Back to This Tutorial'
+
+# print(set(sentence))
+unique_char = set(char_list)
+unique_char.add('x')
+print(set(unique_char))
+#unique_char.clear()  # clear all the letter in the list
+
+# print(unique_char.remove('x'))  # cut the thing , thing return back is None
+
+#print(unique_char.discard('y'))
+
+# compare set1 and set2 different
+set1 = unique_char
+set2 = {'a','e','i'}
+print(set1.difference(set2))   # 差集
+print(set1.intersection(set2))  # 交集
+
+# 36  正则表达式 （Rgular Expression） RegEx  网页爬虫
+# <title>我是标题</ title>
+
+import re 
+
+
