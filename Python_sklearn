@@ -1,0 +1,227 @@
+ # 1
+# 监督学习（数据和标签的）和非监督学习和半监督学习，强化学习（遗传算法）
+
+# setup
+
+# Numpy (1.61)
+# sciPy(>=0.9)
+
+# pip3 install scikit-learn
+# pip3 insteall -U scikit-learn
+
+# sk-learn.org // scikit-learn.org
+
+# 通用学习模式
+import numpy as np
+from sklearn import datasets
+from sklearn.cross_validation import train_test_split
+ 
+iris = dataset.load_iris()
+iris_X = iris.data
+iris_y = iris.target
+
+print(iris_X[:2,:])   # 两个属性
+print(iris_y)   # 输出 y的种类 ：三类
+
+X_train,X_test,y_train,y_test = train_test_split(iris_X, iris_y, test_size=0.3)# 前面70%，测试30% 并且打乱数据
+
+
+knn = KNeighborsClassfier()
+knn.fit(X_train, y_train)
+print(knn.predicet(X_test))
+print(y_test)
+
+
+# 5 sklearn 的databasets  线性回归
+
+from sklearn import datasets
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+
+# 样本标记
+loaded_data = datasets.load_boston()
+data_X = loaded_data.data
+data_y = loaded_data.target  
+
+# 模型建立和学习
+model = LinearRegression()
+model.fit(data_X,data_y)   # 进行学习
+
+print(model.predict(data_X[:4,:]))  # 预测下前四个数据
+
+# Step1 尝试不同model,step 2,：调整参数，等等
+
+# 创造参数  x, 和 y data 进行学习
+X,y = dataset.make_regression(n_samples=100, n_features=1, n_targets=1,noise=1)
+plt.scatter(X,y)
+plt.show()
+
+
+## 6  sklearn model 常用属性和功能
+loaded_data = datasets.load_boston()
+data_X = loaded_data.data
+data_y = loaded_data.target
+
+# 模型建立和学习
+model = LinearRegression()
+model.fit(data_X, data_y)
+
+# print(model.predict(data_X[:4,:])) # 前四个
+print(model.coef_)   # y = 0.1x + 0.3   会输出0.1 ，x的系数
+print(model.intercept)  # 会输出0.3 与y轴的交点
+print(model.get_params)  #  查看给model定义的参数
+print(model.score(data_X, data_y))  # 预测打分， 看吻合情况， R^2 coefficient of determination 决定系数
+
+
+# normalization 标准化数据/ minmax 方式 两种
+from sklearn import preprocessing
+import numpy as np
+
+a = np.array([[10, 2.7, 3.6],
+              [-100,5,-2],
+              [120,20,40]],dtype=np.float64)
+
+print(a)
+print(preprocessing.scale(a))
+
+X, y = make_classification(n_samples=300, n_features=2, n_redundant=0, n_informative=2,
+                           random_state=22, n_cluster_per_class=1,scale=100)  # 两个属性，infomative =2 是两个是相关的
+
+# 标准化
+X = preprocessing.scale(X)  #  minmax_scale(X,feature_range=(0,1))  default  (0, 1)
+X_train, X_test,y_train,y_test = train_test_split(X, y, test_size=3)
+# 模型建立和训练
+clf = SVC()
+clf.fit(X_train,y_train)
+# 输出结果
+print(clf.score(X_test, y_test))
+
+
+# 交叉验证  cross-valiation
+from sklearn import preprocessing
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.cross_validation import train_test_split 
+from sklearn.neighbors import KNeighborsClassifier
+
+
+X, y = make_classification(n_samples=300, n_features=2, n_redundant=0, n_informative=2,
+                           random_state=22, n_cluster_per_class=1,scale=100)  # 两个属性，infomative =2 是两个是相关的
+
+from sklearn.cross_validation import cross_val_score  # 使用K折交叉验证模块
+# 分割数据
+X_train, X_test, y_train, y_test = train_test_split(X,y,random_state=4)
+# 建立模型
+knn = KNeighborsClassifier(n_neighbors=5) # n_neighbors ?? 数据点附近的5个点 中和下得出y_prediction ,n值得选取 
+scores = cross_val_score(knn,X,cv=5, scoring='accuracy') # cv 是把数据分为5组
+print(scores.mean())
+
+# 训练模型
+knn.fit(X_train, y_train)
+y_pred = knn.predict(X_test)
+print(knn.score(X_test, y_test))
+
+scores = cross_val_score(knn, X, y, cv=5, scoring='accuracy')
+
+# 将5次的预测准确率打印出
+print(scores)
+# 将5次的结果取平均完成
+print(scores.mean())
+
+
+# 交叉验证 2 overfitting  更改model 来看最优
+from sklearn.learning_curve import learning_curve # 学习曲线模块
+from sklearn.datasets import load_digits  # digits 数据集
+from sklearn svm import SVC # Support Vector Classifier
+import matplotlib pyplot as plt # 可视化模块
+import numpy as np
+
+"""
+加载digits数据集，其包含的是手写体的数字，从0到9。数据集总共有1797个样本，
+每个样本由64个特征组成， 分别为其手写体对应的8×8像素表示，每个特征取值0~16。
+"""
+digits = load_digits()
+X = digits.data
+y = digits.target
+
+"""
+观察样本由小到大的学习曲线变化, 采用K折交叉验证 cv=10, 选择平均方差检视模型效能
+scoring='mean_squared_error', 样本由小到大分成5轮检视学习曲线(10%, 25%, 50%, 75%, 100%):
+"""
+train_size.train_loss.test_loss = learning_curve(SVC(gamma=0.001), X, y,cv=10,
+                                                 scoring='mean_squared_error',
+                                                 train_sizes = [0.1,0.25,0.5,0.75,1])
+# 平均每一轮所得到的平均方差（共5轮，10%、25%、50%，75%、100%）
+train_loss_mean = -np.mean(train_loss.axis=1)
+train_loss_mean = -np.mean(test_loss.axis=1)
+# 可视化图形
+plt.plot(train_sizes, train_loss_mean, 'o-',color='r',label='Training')
+plt.plot(train_sizes,test_loss_mean, 'o-',color="g", label="Cross-validation")
+
+plt.xlabel("Training examples")
+plt.ylabel("Loss")
+plt.legend(loc="best")
+plt.show()
+
+
+# 交叉验证 3 cross_validation  调整参数 减少overfitting
+
+from sklearn.learning_curve import validation_curve
+from sklearn.datasets import load_digits
+from sklearn.svm import SVC
+import matplotlib pyplot as plt
+import numpy as np
+
+# digits 数据集
+digits = load_digits()
+X = digits.data
+y = digits.target
+
+# 建立参数测试集
+param_range = np.logspace(-6,-2.3, 5)
+
+# 使用validation_curve快速找出参数对模型的影响
+train_loss.test_loss = validation_curve(
+    SVC(),X,y,param_name='gamma',param_range=param_range,cv=10,scoring='mean_squared_error')
+
+# 平均每一轮的平方差
+train_loss_mean = -n.mean(train_loss, axis=1)
+test_loss_mean = -n.mean(test_loss, axis=1)
+
+# 可视化图形
+plt.plot(param_range, train_loss_mean, 'o-',color='r',
+         label = "Training")
+plt.plot(param_range,test_loss_mean,'o-', color='g',
+         label="Cross-validation")
+
+plt.xlabel("gamma")
+plt.ylabel("Loss")
+plt.legend(loc="best")
+plt.show()
+
+# 12 保存模型
+from sklearn import svm
+from sklearn import datasets
+
+clf = svm.SVC()   # 分类器
+iris = datasets.load_iris()
+X, y = iris.data, iris.target
+clf.fit(X,y)
+
+# 保存，method 1 :pickle
+import pickle
+with open('save/clf.pickle', 'wb') as f:
+    pickle.dump(clf,f)
+
+with open('save/clf.pickle','rb') as f:
+    clf2 = pickle.load(f)
+    print(clf2.predict(X[0:1]))  # 0~1第一个值
+
+# method 2 : joblib
+from sklearn.externals import joblib
+
+# Save
+joblib.dump('clf','save/clf.pkl')
+# restore
+clf3 = joblib.load('save/clf.pkl')
+print(clf3.predict(X[0:1]))
