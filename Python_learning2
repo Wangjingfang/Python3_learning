@@ -157,7 +157,12 @@
 ##d
 ##[1, 2, [333, 4]]
 # deep copy 和 copy 是，Deep copy会给新变量创建一块新的内存空间，shallow copy会共用同一块内存空间
-
+>>> b =a
+>>> b[0] = 8
+>>> a
+[8, 2, [3, 4]]
+>>> b
+[8, 2, [3, 4]]   shallow copy 
 # 31 Python threading  多线， 同一时间分批量计算
 
 # 32 add treading
