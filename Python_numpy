@@ -1,0 +1,288 @@
+# numpy & pandas  数据分析模块 (c 语言写的)
+# 安装 org
+# numpy基本属性
+
+import numpy as np
+
+# from numpy import array
+
+array = np.array([[1,2,3],
+                 [2,3,4]])
+
+print(array)
+print('number of dim:', array.ndim)
+print('shape:', array.shape)
+print('size', array.size)
+
+dtype : define the 数字类型 ，int32, int64, float32
+"""
+[[1 2 3]
+ [2 3 4]]
+number of dim: 2
+shape: (2, 3)
+size 6
+"""
+
+# numpy 创建array
+import numpy as np
+
+a = np.array([2,23,4])
+print(a)  # [ 2 23  4]
+
+a = np.array([2,23,4],dtype=np.int)
+print(a.dtype) # int 32
+
+a = np.array([2,23,4], dtype=np.float32)
+print(a.dtype) # float 32
+
+b = np.array([[2,23,4],
+              [2,32,4]])
+print(b)
+
+b = np.zeros((3,4))  # shape 的时候用括号
+print(b)
+
+b = np.ones((3,4),dtype=np.int16)
+print(b)
+
+b = np.arange(10, 20, 2)
+print(b)  # [10 12 14 16 18]
+
+b = np.arange(12).reshape((3,4))
+print(b)
+"""
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+ """
+
+b = np.linspace(1,10,5)  # 生成 5段的数据
+print(b)  # [ 1.    3.25  5.5   7.75 10.  ]
+
+# numpy 基础运算
+import numpy as np
+a = np,array([10,20,30,40])
+b = np.arrage(4)
+
+print(a)
+c = b**2 # 双星 代表幂
+
+c = 10*np.cos(a)
+print(c)
+
+print(b)
+print(b<3) # 小于3 的数值
+
+a = np.array([[1,1],
+              [0,1]])
+b = np.arange(4).reshape((2,2))
+print (b)
+c =a*b
+c_dot = np.dot(a,b)
+
+print(c)  # 对应位运算
+print(c_dot)  # 矩阵运算
+
+c_dot_2 = a.dot(b) # a X b
+print(c_dot_2)
+
+a = np.random.random((2,4))
+print(a) # [[0.97312442 0.45947326 0.03245484 0.86848553]
+ #[0.14741922 0.97890446 0.27573702 0.70948977]]
+print(np.sum(a))  # axis =1 在行中求和， axis =0 在每列求和
+print(np.min(a,axis=1))
+print(np.max(a,axis=0))
+
+# numpy 基础运算2
+
+import numpy as np
+
+A = np.arange(2,14).reshape(3,4)
+
+print(np.argmin(A))# 最小值得索引
+print(np.argmax(A)) # 最大值索引
+
+print(np.mean(A))
+print(A.mean())
+
+print(np.median(A))  # 中位数
+print(A)
+print(np.cumsum(A))  # 逐个累加  [ 2  5  9 14 20 27 35 44 54 65 77 90]
+
+print(np.diff(A))   # 逐个累差  [[1 1 1]
+                        #        [1 1 1]
+                        #        [1 1 1]]
+
+print(np.nonzero(A))
+# (array([0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2], dtype=int64),
+# array([0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3], dtype=int64))
+
+print(np.sort(A))  #  逐行的排序
+
+print(np.transpose(A))  # 矩阵转置 method 1
+print(A.T)              # 矩阵转置 method 2
+print((A.T).dot(A))     
+
+print(np.clip(A,5,9))  # 所有小于5的 都 为5， 大于9的都为9
+"""
+[[5 5 5 5]
+ [6 7 8 9]
+ [9 9 9 9]]
+ """
+
+# numpy 中都有对行和列的计算  axis 0 ， 1
+
+# 7 numpy 索引
+import numpy as np
+
+A = np.arange(3,15)
+print(A)  # [ 3  4  5  6  7  8  9 10 11 12 13 14]
+print(A[3])  # 6
+
+A = np.arange(3,15).reshape(3,4)
+print(A)
+print(A[2])
+print(A[:,1])  # 第一列所有数
+
+for row in A:
+    print(row)
+"""
+[3 4 5 6]
+[ 7  8  9 10]
+[11 12 13 14]
+"""
+for column in A.T:
+    print(column)
+print(A.flatten())  # [ 3  4  5  6  7  8  9 10 11 12 13 14]
+print(A.flat())     # numpy.flatiter' object is not callable
+for item in A.flat:
+    print(item)
+
+# 8 nummpy array 合并
+import numpy as np
+
+A = np.array([1,1,1])
+B = np.array([2,2,2])
+
+print(np.vstack((A,B)))  # vertiacl stack
+# [[1 1 1]
+#  [2 2 2]]
+
+C = np.vstack((A,B))
+print(A.shape, C.shape) #  (3,) (2, 3)
+D = np.hstack((A,B))   # horizontal stack
+print(D) # [1 1 1 2 2 2]
+print(A.shape,D.shape)  # (3,) (6,)
+"""
+[[1 1 1]
+ [2 2 2]]
+(3,) (2, 3)
+[1 1 1 2 2 2]
+(3,) (6,)
+
+"""
+print(A[np.newaxis,:])  # 加了一个行维度 [[1 1 1]]
+print(A[np.newaxis,:].shape)  # (1, 3)
+print(A[:,np.newaxis])
+"""
+[[1]
+ [1]
+ [1]]
+"""
+print(A[:,np.newaxis].shape)  # (3,1)
+
+C = np.concatenate((A,B,B,A), axis=0) # 多个
+print(C)  # [1 1 1 2 2 2 2 2 2 1 1 1]
+
+A = np.array([1,1,1])[:,np.newaxis]
+B = np.array([2,2,2])[:,np.newaxis]
+
+C = np.vstack((A,B))
+D = np.hstack((A,B))
+
+print(C)
+print(D)
+"""
+[[1 2]
+ [1 2]
+ [1 2]]
+"""
+print(C.shape,D.shape)  # (6, 1) (3, 2)
+
+# np.concatenate()  # 合并多个矩阵或序列
+C = np.concatenate((A,B,B,A),axis=0)
+print(C)
+"""
+[[1]
+ [1]
+ [1]
+ [2]
+ [2]
+ [2]
+ [2]
+ [2]
+ [2]
+ [1]
+ [1]
+ [1]]
+"""
+D = np.concatenate((A,B,B,A),axis=1)
+print(D)
+"""
+[[1 2 2 1]
+ [1 2 2 1]
+ [1 2 2 1]]
+"""
+
+# 9  分割
+
+import numpy as np
+
+A = np.arange(12).reshape(3,4)
+print(A)
+
+print(np.split(A,2,axis=1))
+"""
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+[array([[0, 1],
+       [4, 5],
+       [8, 9]]), array([[ 2,  3],
+       [ 6,  7],
+       [10, 11]])]
+"""
+# 不等量的分割
+print(np.array_split(A,3,axis=1))
+
+print(np.vsplit(A,3)) # [array([[0, 1, 2, 3]]), array([[4, 5, 6, 7]]), array([[ 8,  9, 10, 11]])]
+print(np.hsplit(A,2))
+"""
+[array([[0, 1],
+       [4, 5],
+       [8, 9]]), array([[ 2,  3],
+       [ 6,  7],
+       [10, 11]])]
+"""
+
+# 10 numpy copy & deep copy
+
+import numpy as np
+a = np.arange(4)
+b = a
+c = a
+d = b
+a[0]=11
+
+b is a  # 所有变量都是 等于a的
+d[1:3] = [22,33] # 不包含 3的位置索引
+
+#### copy()的赋值方式没有关联性
+b = a.copy()  # deep copy  只想把值copy 过来  用a.copy()
+print(b)
+a[3]=44
+print(a)   # [11 22 33 44]
+print(b)  #  [11 22 33  3]
+
+
+
