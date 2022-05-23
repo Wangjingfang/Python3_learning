@@ -1,0 +1,13 @@
+# 好简洁的拆表代码！！！
+import pandas as pd
+
+# Excel文件所在的路径
+df1 = pd.read_excel(r"D:\data\拆分表\亚马逊FBA库龄库存报告汇总表2021-09-01至2021-09-30-456453 - 亚马逊运营中心.xls",
+                    sheet_name=r"亚马逊FBA库龄库存报告汇总表")
+# 添加要分组的列名
+nodeDataList = list(df1.groupby(['9月账号首选业务人员部门']))
+for nodeData in nodeDataList:
+    # nodeData 是元组包含两列；nodeData[0] 是元组的第0列，0列是部门名；nodeData[1]是元组的第1列，是拆分表前的所有部门对应的内容
+    # print(nodeData[2]) IndexError: tuple index out of range
+    #
+   nodeData[1].to_excel('D:\data\拆分表' + str(nodeData[0])+ '.xlsx', sheet_name=nodeData[0], index=False)
